@@ -1,0 +1,26 @@
+name: fifo 
+base: core24 
+version: '0.1' 
+summary: RT - priority-based scheduling (FIFO)
+description: |
+  RT - priority-based scheduling (FIFO)
+
+grade: stable 
+confinement: strict 
+
+apps:
+  fifo:
+    command: usr/bin/fifo
+    plugs: [process-control]
+
+parts:
+  fifo:
+    # See 'snapcraft plugins'
+    plugin: nil
+    override-pull: |
+      cp $CRAFT_PROJECT_DIR/fifo.c $CRAFT_PART_SRC
+    override-build: |
+      gcc fifo.c -o fifo
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      cp fifo $CRAFT_PART_INSTALL/usr/bin
+    build-packages: [build-essential]
